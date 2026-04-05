@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 const photos = [
-  { src: '/assets/studio-main.jpeg', alt: 'Main studio setup with monitors and workstation' },
-  { src: '/assets/rack-gear.jpeg', alt: 'Analog rack gear — Furman, SCL2, Grace Design' },
-  { src: '/assets/mic.jpeg', alt: 'Condenser microphone in vocal booth' },
-  { src: '/assets/drums.png', alt: 'Drum room with full kit and overhead mics' },
-  { src: '/assets/studio-render.png', alt: 'Promethex Productions studio' },
+  { src: '/assets/studio-main.jpg', alt: 'Main studio setup with monitors and workstation' },
+  { src: '/assets/gear-rack.jpg', alt: 'Analog rack gear — Furman, SCL2, Grace Design' },
+  { src: '/assets/vocal-booth.jpg', alt: 'Condenser microphone in vocal booth' },
+  { src: '/assets/drums-room.jpg', alt: 'Drum room with full kit and overhead mics' },
+  { src: '/assets/control-room.jpg', alt: 'Promethex Productions control room' },
 ]
 
 const gearList = [

@@ -9,7 +9,7 @@ export default function Hero() {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/assets/hero-bg.png')" }}
+        style={{ backgroundImage: "url('/assets/57D958D9-F337-49AA-8BCF-828E4A7C3689_1_105_c.jpeg')" }}
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-[#0a0a0a]" />

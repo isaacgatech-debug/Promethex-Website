@@ -27,7 +27,7 @@ function InstagramIcon() {
 const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
-  { label: 'Gear', href: '#gear' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Work', href: '#work' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -35,7 +35,7 @@ const navLinks = [
 const socials = [
   { icon: FacebookIcon, href: 'https://www.facebook.com/Promethexproductionstudios/', label: 'Facebook' },
   { icon: YouTubeIcon, href: 'https://www.youtube.com/channel/UCW9D2yCSWRHw98nf8cNgJgg', label: 'YouTube' },
-  { icon: InstagramIcon, href: 'https://www.instagram.com/promex.productions/', label: 'Instagram' },
+  { icon: InstagramIcon, href: 'https://www.instagram.com/promethexstudio/', label: 'Instagram' },
 ]
 
 export default function Footer() {
@@ -43,7 +43,7 @@ export default function Footer() {
     <footer className="border-t border-white/5 bg-[#050505] py-16 px-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
         <a href="#" className="flex items-center">
-          <img src="/assets/logo.PNG" alt="Promethex Productions" className="h-14 w-auto" />
+          <img src="/assets/logo.PNG" alt="Promethex Productions" className="h-32 w-auto" />
         </a>
 
         <nav className="flex flex-wrap justify-center gap-6">
@@ -77,7 +77,7 @@ export default function Footer() {
           <p className="text-gray-600 text-sm">
             © {new Date().getFullYear()} Promethex Productions. All rights reserved.
           </p>
-          <p className="text-gray-700 text-xs mt-1">Nashville, Tennessee · (615) 870-7461</p>
+          <p className="text-gray-700 text-xs mt-1">Nashville, Tennessee</p>
         </div>
       </div>
     </footer>

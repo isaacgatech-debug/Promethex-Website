@@ -3,28 +3,20 @@ import { Mic2, Sliders, Disc3, Music4 } from 'lucide-react'
 
 const services = [
   {
+    icon: Music4,
+    title: 'Production',
+  },
+  {
     icon: Mic2,
     title: 'Recording',
-    description:
-      'Capture your performance in a professionally treated acoustic environment. Vocals, guitars, keys, drums — we mic everything with precision and care.',
   },
   {
     icon: Sliders,
     title: 'Mixing',
-    description:
-      'Our analog-hybrid signal chain delivers warmth and depth. Every element is balanced, shaped, and placed in the stereo field to serve your song.',
   },
   {
     icon: Disc3,
     title: 'Mastering',
-    description:
-      'Release-ready masters that translate across every platform and playback system — from streaming services to vinyl and beyond.',
-  },
-  {
-    icon: Music4,
-    title: 'Production',
-    description:
-      'Full beat and arrangement production from the ground up. We collaborate with you to develop your sound and bring your musical vision to life.',
   },
 ]
 
@@ -55,8 +47,7 @@ export default function Services() {
                   <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-600/20 group-hover:border-blue-500/40 transition-all duration-300">
                     <Icon size={22} className="text-blue-400" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
+                  <h3 className="text-xl font-bold text-white">{service.title}</h3>
                 </div>
               </div>
             )

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Phone, Mail, MapPin, Send } from 'lucide-react'
+import { Mail, MapPin, Send } from 'lucide-react'
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [sent, setSent] = useState(false)
 
   const handleChange = (e) => {
@@ -11,10 +11,25 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const subject = encodeURIComponent(`Session Inquiry from ${form.name}`)
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`)
-    window.location.href = `mailto:promethexproductions@gmail.com?subject=${subject}&body=${body}`
-    setSent(true)
+    const formElement = e.target
+    const formData = new FormData(formElement)
+    
+    // Localhost workaround - show form data in alert
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const data = Object.fromEntries(formData)
+      alert(`[LOCALHOST TEST]\n\nForm would send to: promethexproductions@gmail.com\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'Not provided'}\nMessage: ${data.message}\n\n(In production, this submits via Netlify Forms)`)
+      setSent(true)
+      return
+    }
+    
+    // Production Netlify form submission
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
+    })
+      .then(() => setSent(true))
+      .catch((error) => alert('Error sending message. Please try again.'))
   }
 
   return (
@@ -36,7 +51,6 @@ export default function Contact() {
             <div className="space-y-5">
               {[
                 { icon: MapPin, label: 'Location', value: '931 Twin Elms Ct, Nashville, TN' },
-                { icon: Phone, label: 'Phone', value: '(615) 870-7461', href: 'tel:6158707461' },
                 { icon: Mail, label: 'Email', value: 'promethexproductions@gmail.com', href: 'mailto:promethexproductions@gmail.com' },
               ].map(({ icon: Icon, label, value, href }) => (
                 <div key={label} className="flex items-start gap-4">
@@ -89,7 +103,20 @@ export default function Contact() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="space-y-5"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <p className="hidden">
+                  <label>
+                    Don't fill this out: <input name="bot-field" />
+                  </label>
+                </p>
                 <div>
                   <label className="block text-gray-400 text-xs uppercase tracking-widest mb-2" htmlFor="name">
                     Your Name
@@ -102,7 +129,7 @@ export default function Contact() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="John Smith"
-                    className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all duration-200"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-[#222] transition-all duration-200"
                   />
                 </div>
                 <div>
@@ -117,7 +144,7 @@ export default function Contact() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@example.com"
-                    className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all duration-200"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-[#222] transition-all duration-200"
                   />
                 </div>
                 <div>
@@ -132,7 +159,7 @@ export default function Contact() {
                     value={form.message}
                     onChange={handleChange}
                     placeholder="I'm working on a single and need recording + mixing..."
-                    className="w-full bg-white/3 border border-white/8 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-white/5 transition-all duration-200 resize-none"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500/50 focus:bg-[#222] transition-all duration-200 resize-none"
                   />
                 </div>
                 <button
