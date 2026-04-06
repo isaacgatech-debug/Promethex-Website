@@ -3,30 +3,58 @@ import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react'
 
 const tracks = [
   {
-    title: 'Blood on the Bottom Line',
+    title: 'Everytime',
     artist: 'Selah Butcher',
     role: 'Producer / Mixer / Mastering',
-    audioUrl: '/assets/blood-on-the-bottom-line.mp3',
-    artwork: '/assets/blood-on-the-bottom-line-artwork.png',
+    genre: 'Pop',
+    audioUrl: '/assets/everytime.mp3',
+    artwork: '/assets/shared-artwork.png',
+  },
+  {
+    title: 'Pa (For Emmy)',
+    artist: 'Sara Reyne',
+    role: 'Producer / Mixer / Mastering',
+    genre: 'Singer/Songwriter',
+    audioUrl: '/assets/pa-for-emmy.mp3',
+    artwork: '/assets/pa-for-emmy-artwork.png',
   },
   {
     title: 'Past Tense',
     artist: 'Selah Butcher',
     role: 'Producer / Mixer / Mastering',
+    genre: 'Singer/Songwriter',
     audioUrl: '/assets/past-tense.mp3',
     artwork: '/assets/shared-artwork.png',
   },
   {
-    title: 'Everytime',
-    artist: 'Selah Butcher',
+    title: 'Fire and Blood',
+    artist: 'PiPELLA',
     role: 'Producer / Mixer / Mastering',
-    audioUrl: '/assets/everytime.mp3',
-    artwork: '/assets/shared-artwork.png',
+    genre: 'Cinematic',
+    audioUrl: '/assets/fire-and-blood.mp3',
+    artwork: '/assets/fire-and-blood-artwork.png',
+  },
+  {
+    title: 'Blush (The Crush Song)',
+    artist: 'Emily Grace',
+    role: 'Producer / Mixer / Mastering',
+    genre: 'Pop',
+    audioUrl: '/assets/blush-the-crush-song.mp3',
+    artwork: '/assets/blush-artwork.png',
+  },
+  {
+    title: 'Blood on the Bottom Line',
+    artist: 'Aaron Marlowe',
+    role: 'Producer / Mixer / Mastering',
+    genre: 'Rock',
+    audioUrl: '/assets/blood-on-the-bottom-line.mp3',
+    artwork: '/assets/blood-on-the-bottom-line-artwork.png',
   },
   {
     title: 'Seventeen',
     artist: 'Selah Butcher',
     role: 'Producer / Mixer / Mastering',
+    genre: 'Singer/Songwriter',
     audioUrl: '/assets/seventeen.mp3',
     artwork: '/assets/shared-artwork.png',
   },
@@ -34,20 +62,15 @@ const tracks = [
     title: 'Small Town',
     artist: 'Victoria Barral',
     role: 'Production / Guitars',
+    genre: 'Pop',
     audioUrl: '/assets/small-town.mp3',
     artwork: '/assets/small-town-artwork.png',
-  },
-  {
-    title: 'Blush (The Crush Song)',
-    artist: 'Emily Grace',
-    role: 'Producer / Mixer / Mastering',
-    audioUrl: '/assets/blush-the-crush-song.mp3',
-    artwork: '/assets/blush-artwork.png',
   },
   {
     title: 'Loving You',
     artist: 'Johnny Hawley',
     role: 'Producer / Mixer / Mastering',
+    genre: 'Singer/Songwriter',
     audioUrl: '/assets/loving-you.mp3',
     artwork: '/assets/loving-you-artwork.png',
   },
@@ -55,29 +78,17 @@ const tracks = [
     title: 'Ride The Wave (WAVYS 2024)',
     artist: 'PiPELLA',
     role: 'Producer / Mixer / Mastering',
+    genre: 'Pop',
     audioUrl: '/assets/ride-the-wave.mp3',
     artwork: '/assets/ride-the-wave-artwork.png',
-  },
-  {
-    title: 'Fire and Blood',
-    artist: 'PiPELLA',
-    role: 'Producer / Mixer / Mastering',
-    audioUrl: '/assets/fire-and-blood.mp3',
-    artwork: '/assets/fire-and-blood-artwork.png',
   },
   {
     title: 'Queen of West Coast',
     artist: 'Navy Pier',
     role: 'Producer / Mixer / Mastering',
+    genre: 'Rock',
     audioUrl: '/assets/queen-of-west-coast.mp3',
     artwork: '/assets/queen-of-west-coast-artwork.png',
-  },
-  {
-    title: 'Pa (For Emmy)',
-    artist: 'Sara Reyne',
-    role: 'Producer / Mixer / Mastering',
-    audioUrl: '/assets/pa-for-emmy.mp3',
-    artwork: '/assets/pa-for-emmy-artwork.png',
   },
 ]
 
@@ -197,9 +208,14 @@ function TrackCard({ track, index, currentPlayingIndex, setCurrentPlayingIndex }
       <div className="p-4 pt-2">
         <p className="text-white font-semibold text-sm truncate">{track.title}</p>
         <p className="text-gray-400 text-xs mt-0.5">{track.artist}</p>
-        <span className="inline-block mt-2 px-2 py-0.5 rounded-full bg-blue-600/15 border border-blue-500/20 text-blue-400 text-xs font-medium">
-          {track.role}
-        </span>
+        <div className="flex gap-2 mt-2 flex-wrap">
+          <span className="inline-block px-2 py-0.5 rounded-full bg-blue-600/15 border border-blue-500/20 text-blue-400 text-xs font-medium whitespace-nowrap">
+            {track.role}
+          </span>
+          <span className="inline-block px-2 py-0.5 rounded-full bg-purple-600/15 border border-purple-500/20 text-purple-400 text-xs font-medium whitespace-nowrap">
+            {track.genre}
+          </span>
+        </div>
       </div>
     </div>
   )

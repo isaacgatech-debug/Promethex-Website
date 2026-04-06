@@ -29,7 +29,7 @@ const testimonials = [
   {
     quote:
       "He is supportive, a genuine soul, and works hard to reach for the stars in his music to help artists. I couldn't have asked for a better producer. I feel God blessed me with crossing paths with Isaac.",
-    name: 'Client',
+    name: 'Gemma Madrid',
     role: 'Recording Artist',
   },
 ]
