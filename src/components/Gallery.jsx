@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const photos = [
@@ -23,6 +23,8 @@ const photos = [
 export default function Gallery() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [activePhoto, setActivePhoto] = useState(0)
+  const touchStartX = useRef(null)
+  const touchEndX = useRef(null)
 
   const openLightbox = (index) => {
     setActivePhoto(index)
@@ -37,6 +39,7 @@ export default function Gallery() {
     setActivePhoto((prev) => (prev - 1 + photos.length) % photos.length)
   }
 
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!lightboxOpen) return
@@ -47,6 +50,33 @@ export default function Gallery() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [lightboxOpen])
+
+  // Handle touch/swipe events for mobile
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return
+    
+    const diff = touchStartX.current - touchEndX.current
+    const minSwipeDistance = 50 // minimum distance for a swipe
+
+    if (diff > minSwipeDistance) {
+      // Swiped left, go to next photo
+      nextPhoto()
+    } else if (diff < -minSwipeDistance) {
+      // Swiped right, go to previous photo
+      prevPhoto()
+    }
+
+    touchStartX.current = null
+    touchEndX.current = null
+  }
 
   return (
     <section id="gallery" className="py-28 px-6">
@@ -83,10 +113,13 @@ export default function Gallery() {
         <div 
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setLightboxOpen(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           {/* Previous Button */}
           <button 
-            className="absolute left-6 text-white/80 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all"
+            className="absolute left-6 text-white/80 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all hidden md:block"
             onClick={(e) => { e.stopPropagation(); prevPhoto() }}
           >
             <ChevronLeft size={48} />
@@ -106,6 +139,9 @@ export default function Gallery() {
             alt={photos[activePhoto].alt}
             className="max-w-full max-h-[85vh] object-contain rounded-lg"
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           />
 
           {/* Photo Counter */}
@@ -115,11 +151,16 @@ export default function Gallery() {
 
           {/* Next Button */}
           <button 
-            className="absolute right-6 text-white/80 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all"
+            className="absolute right-6 text-white/80 hover:text-white p-2 hover:bg-white/10 rounded-full transition-all hidden md:block"
             onClick={(e) => { e.stopPropagation(); nextPhoto() }}
           >
             <ChevronRight size={48} />
           </button>
+
+          {/* Mobile swipe hint */}
+          <div className="absolute bottom-16 text-white/40 text-xs md:hidden">
+            Swipe to navigate
+          </div>
         </div>
       )}
     </section>
