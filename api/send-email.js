@@ -1,8 +1,8 @@
-import { Resend } from 'resend';
+const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Promethex Productions <contact@promethexproductions.com>',
+      from: 'onboarding@resend.dev',
       to: ['promethexproductions@gmail.com'],
       replyTo: email,
       subject: `New Contact Form Submission from ${name}`,
@@ -44,12 +44,12 @@ export default async function handler(req, res) {
 
     if (error) {
       console.error('Resend error:', error);
-      return res.status(500).json({ error: 'Failed to send email' });
+      return res.status(500).json({ error: 'Failed to send email', details: error.message });
     }
 
     return res.status(200).json({ success: true, data });
   } catch (error) {
     console.error('Server error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 }
