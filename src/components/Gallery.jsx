@@ -18,6 +18,7 @@ const photos = [
   { src: '/assets/DB241713-B069-463F-A994-DF4F41BE343A_1_105_c.jpeg', alt: 'Studio photo' },
   { src: '/assets/E3863FCC-D28D-4FC0-9F59-C50BB98F3293_1_105_c.jpeg', alt: 'Studio photo' },
   { src: '/assets/IMG_7319.jpeg', alt: 'Studio photo' },
+  { src: '/assets/IMG_9238.jpeg', alt: 'Studio photo' },
 ]
 
 export default function Gallery() {
