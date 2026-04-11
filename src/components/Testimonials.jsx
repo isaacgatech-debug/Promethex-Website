@@ -40,9 +40,7 @@ export default function Testimonials() {
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
   const isDragging = useRef(false)
-  const wheelTimeout = useRef(null)
-  const wheelDelta = useRef(0)
-  const isSwipeCooldown = useRef(false)
+  const lastSwipeTime = useRef(0)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length)
@@ -99,45 +97,28 @@ export default function Testimonials() {
   }
 
   const handleWheel = (e) => {
-    // Detect horizontal scrolling (trackpad swipe)
-    const isHorizontal = Math.abs(e.deltaX) > 0
+    // Only handle horizontal swipes
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
     
-    if (isHorizontal && !isSwipeCooldown.current) {
-      wheelDelta.current += e.deltaX
-      
-      const threshold = 30
-      
-      // Trigger immediately when threshold is reached
-      if (Math.abs(wheelDelta.current) > threshold) {
-        if (wheelDelta.current > 0) {
-          nextSlide()
-        } else {
-          prevSlide()
-        }
-        setIsAutoPlaying(false)
-        setTimeout(() => setIsAutoPlaying(true), 30000)
-        
-        wheelDelta.current = 0
-        
-        // Set cooldown to prevent multiple slides
-        isSwipeCooldown.current = true
-        setTimeout(() => {
-          isSwipeCooldown.current = false
-        }, 600)
-        
-        // Clear any pending timeout
-        if (wheelTimeout.current) {
-          clearTimeout(wheelTimeout.current)
-        }
-      } else {
-        // Reset delta after a short delay if threshold not reached
-        if (wheelTimeout.current) {
-          clearTimeout(wheelTimeout.current)
-        }
-        wheelTimeout.current = setTimeout(() => {
-          wheelDelta.current = 0
-        }, 200)
-      }
+    const now = Date.now()
+    const cooldownPeriod = 500 // 500ms between swipes
+    
+    // Check if enough time has passed since last swipe
+    if (now - lastSwipeTime.current < cooldownPeriod) return
+    
+    // Detect swipe direction
+    if (e.deltaX > 5) {
+      // Swipe left (next)
+      nextSlide()
+      lastSwipeTime.current = now
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 30000)
+    } else if (e.deltaX < -5) {
+      // Swipe right (previous)
+      prevSlide()
+      lastSwipeTime.current = now
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 30000)
     }
   }
 
