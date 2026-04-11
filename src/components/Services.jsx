@@ -43,8 +43,8 @@ export default function Services() {
                 className="group relative p-8 rounded-2xl border border-white/5 bg-white/2 hover:border-blue-500/40 hover:bg-blue-950/10 transition-all duration-300 cursor-default"
               >
                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-b from-blue-600/5 to-transparent" />
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-600/20 group-hover:border-blue-500/40 transition-all duration-300">
+                <div className="relative text-center">
+                  <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-600/20 group-hover:border-blue-500/40 transition-all duration-300 mx-auto">
                     <Icon size={22} className="text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-white">{service.title}</h3>
