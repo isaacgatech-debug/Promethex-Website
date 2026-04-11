@@ -42,6 +42,7 @@ export default function Testimonials() {
   const isDragging = useRef(false)
   const wheelTimeout = useRef(null)
   const wheelDelta = useRef(0)
+  const isSwipeCooldown = useRef(false)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length)
@@ -101,7 +102,7 @@ export default function Testimonials() {
     // Detect horizontal scrolling (trackpad swipe)
     const isHorizontal = Math.abs(e.deltaX) > 0
     
-    if (isHorizontal) {
+    if (isHorizontal && !isSwipeCooldown.current) {
       wheelDelta.current += e.deltaX
       
       const threshold = 30
@@ -117,6 +118,12 @@ export default function Testimonials() {
         setTimeout(() => setIsAutoPlaying(true), 30000)
         
         wheelDelta.current = 0
+        
+        // Set cooldown to prevent multiple slides
+        isSwipeCooldown.current = true
+        setTimeout(() => {
+          isSwipeCooldown.current = false
+        }, 600)
         
         // Clear any pending timeout
         if (wheelTimeout.current) {
