@@ -17,6 +17,7 @@ export default function Contact() {
     setIsSubmitting(true)
     setError(null)
     
+    // Send email via Resend API
     try {
       const response = await fetch('/api/send-email', {
         method: 'POST',
