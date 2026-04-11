@@ -1,5 +1,6 @@
 const { Resend } = require('resend');
 
+// Initialize Resend with API key from environment
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async function handler(req, res) {
