@@ -49,13 +49,13 @@ export default function Testimonials() {
   const goToSlide = (index) => {
     setCurrentIndex(index)
     setIsAutoPlaying(false)
-    // Resume auto-play after 5 seconds
-    setTimeout(() => setIsAutoPlaying(true), 5000)
+    // Resume auto-play after 8 seconds
+    setTimeout(() => setIsAutoPlaying(true), 8000)
   }
 
   useEffect(() => {
     if (!isAutoPlaying) return
-    const interval = setInterval(nextSlide, 5000)
+    const interval = setInterval(nextSlide, 8000)
     return () => clearInterval(interval)
   }, [isAutoPlaying, nextSlide])
 
