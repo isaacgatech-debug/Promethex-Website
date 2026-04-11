@@ -40,6 +40,8 @@ export default function Testimonials() {
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
   const isDragging = useRef(false)
+  const wheelTimeout = useRef(null)
+  const wheelDelta = useRef(0)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length)
@@ -95,6 +97,37 @@ export default function Testimonials() {
     handleTouchEnd()
   }
 
+  const handleWheel = (e) => {
+    // Only handle horizontal scrolling (trackpad swipe)
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      e.preventDefault()
+      
+      wheelDelta.current += e.deltaX
+      
+      // Clear existing timeout
+      if (wheelTimeout.current) {
+        clearTimeout(wheelTimeout.current)
+      }
+      
+      // Set new timeout to detect end of swipe
+      wheelTimeout.current = setTimeout(() => {
+        const threshold = 50
+        
+        if (Math.abs(wheelDelta.current) > threshold) {
+          if (wheelDelta.current > 0) {
+            nextSlide()
+          } else {
+            prevSlide()
+          }
+          setIsAutoPlaying(false)
+          setTimeout(() => setIsAutoPlaying(true), 30000)
+        }
+        
+        wheelDelta.current = 0
+      }, 100)
+    }
+  }
+
   const goToSlide = (index) => {
     setCurrentIndex(index)
     setIsAutoPlaying(false)
@@ -130,6 +163,7 @@ export default function Testimonials() {
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
+            onWheel={handleWheel}
           >
             <div 
               className="flex transition-transform duration-500 ease-out"
