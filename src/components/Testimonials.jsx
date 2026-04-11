@@ -98,10 +98,10 @@ export default function Testimonials() {
   }
 
   const handleWheel = (e) => {
-    // Only handle horizontal scrolling (trackpad swipe)
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      e.preventDefault()
-      
+    // Detect horizontal scrolling (trackpad swipe)
+    const isHorizontal = Math.abs(e.deltaX) > 0
+    
+    if (isHorizontal) {
       wheelDelta.current += e.deltaX
       
       // Clear existing timeout
@@ -111,7 +111,7 @@ export default function Testimonials() {
       
       // Set new timeout to detect end of swipe
       wheelTimeout.current = setTimeout(() => {
-        const threshold = 50
+        const threshold = 30
         
         if (Math.abs(wheelDelta.current) > threshold) {
           if (wheelDelta.current > 0) {
@@ -124,7 +124,7 @@ export default function Testimonials() {
         }
         
         wheelDelta.current = 0
-      }, 100)
+      }, 150)
     }
   }
 
