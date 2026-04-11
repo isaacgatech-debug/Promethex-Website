@@ -1,15 +1,4 @@
-const { Resend } = require('resend');
-
-// Check if API key is set
-const apiKey = process.env.RESEND_API_KEY;
-console.log('API Key exists:', !!apiKey);
-console.log('API Key length:', apiKey ? apiKey.length : 0);
-
-const resend = new Resend(apiKey);
-
 module.exports = async function handler(req, res) {
-  console.log('API route called:', req.method);
-  console.log('Request body:', req.body);
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -23,13 +12,17 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, message } = req.body;
-
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
   try {
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Dynamically import Resend
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
       to: ['promethexproductions@gmail.com'],
@@ -50,13 +43,11 @@ module.exports = async function handler(req, res) {
     });
 
     if (error) {
-      console.error('Resend error:', error);
       return res.status(500).json({ error: 'Failed to send email', details: error.message });
     }
 
     return res.status(200).json({ success: true, data });
   } catch (error) {
-    console.error('Server error:', error);
-    return res.status(500).json({ error: 'Internal server error', details: error.message });
+    return res.status(500).json({ error: 'Server error', details: error.message });
   }
 }
