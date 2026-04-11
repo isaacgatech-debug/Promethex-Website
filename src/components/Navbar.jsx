@@ -29,7 +29,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3">
-          <img src="/assets/logo.PNG" alt="Promethex Productions" className="h-24 w-auto" />
+          <img src="/assets/logo-transparent.png" alt="Promethex Productions" className="h-24 w-auto" />
         </a>
 
         <nav className="hidden md:flex items-center gap-8">

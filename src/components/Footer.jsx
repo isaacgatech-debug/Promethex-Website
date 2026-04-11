@@ -43,7 +43,7 @@ export default function Footer() {
     <footer className="border-t border-white/5 bg-[#050505] py-16 px-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
         <a href="#" className="flex items-center">
-          <img src="/assets/logo.PNG" alt="Promethex Productions" className="h-32 w-auto" />
+          <img src="/assets/logo-transparent.png" alt="Promethex Productions" className="h-32 w-auto" />
         </a>
 
         <nav className="flex flex-wrap justify-center gap-6">
