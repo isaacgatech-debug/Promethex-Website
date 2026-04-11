@@ -51,6 +51,7 @@ export default function Testimonials() {
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX
+    touchEndX.current = touchStartX.current
     isDragging.current = true
   }
 
@@ -75,6 +76,23 @@ export default function Testimonials() {
       setIsAutoPlaying(false)
       setTimeout(() => setIsAutoPlaying(true), 30000)
     }
+  }
+
+  const handleMouseDown = (e) => {
+    e.preventDefault()
+    handleTouchStart(e)
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return
+    e.preventDefault()
+    handleTouchMove(e)
+  }
+
+  const handleMouseUp = (e) => {
+    if (!isDragging.current) return
+    e.preventDefault()
+    handleTouchEnd()
   }
 
   const goToSlide = (index) => {
@@ -104,14 +122,14 @@ export default function Testimonials() {
         <div className="relative">
           {/* Testimonial Cards */}
           <div 
-            className="relative overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
+            className="relative overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing select-none"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            onMouseDown={handleTouchStart}
-            onMouseMove={handleTouchMove}
-            onMouseUp={handleTouchEnd}
-            onMouseLeave={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
           >
             <div 
               className="flex transition-transform duration-500 ease-out"
