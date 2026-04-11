@@ -2,34 +2,42 @@ import React, { useState } from 'react'
 import { Mail, MapPin, Send } from 'lucide-react'
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
+    setError(null)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const formElement = e.target
-    const formData = new FormData(formElement)
+    setIsSubmitting(true)
+    setError(null)
     
-    // Localhost workaround - show form data in alert
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      const data = Object.fromEntries(formData)
-      alert(`[LOCALHOST TEST]\n\nForm would send to: promethexproductions@gmail.com\n\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'Not provided'}\nMessage: ${data.message}\n\n(In production, this submits via Netlify Forms)`)
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+      
       setSent(true)
-      return
+      setForm({ name: '', email: '', message: '' })
+    } catch (err) {
+      console.error('Error sending message:', err)
+      setError('Failed to send message. Please try again or email us directly at promethexproductions@gmail.com')
+    } finally {
+      setIsSubmitting(false)
     }
-    
-    // Production Netlify form submission
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    })
-      .then(() => setSent(true))
-      .catch((error) => alert('Error sending message. Please try again.'))
   }
 
   return (
@@ -96,27 +104,23 @@ export default function Contact() {
                 <h3 className="text-white text-xl font-bold mb-2">Message Sent!</h3>
                 <p className="text-gray-400 text-sm">We'll get back to you as soon as possible.</p>
                 <button
-                  onClick={() => setSent(false)}
+                  onClick={() => { setSent(false); setError(null); }}
                   className="mt-6 text-blue-400 text-sm hover:text-blue-300 transition-colors"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
-              <form
-                name="contact"
-                method="POST"
-                data-netlify="true"
-                data-netlify-honeypot="bot-field"
-                onSubmit={handleSubmit}
-                className="space-y-5"
-              >
-                <input type="hidden" name="form-name" value="contact" />
-                <p className="hidden">
-                  <label>
-                    Don't fill this out: <input name="bot-field" />
-                  </label>
-                </p>
+              <>
+                {error && (
+                  <div className="p-4 rounded-xl bg-red-600/10 border border-red-500/20 text-red-400 text-sm mb-4">
+                    {error}
+                  </div>
+                )}
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5"
+                >
                 <div>
                   <label className="block text-gray-400 text-xs uppercase tracking-widest mb-2" htmlFor="name">
                     Your Name
@@ -164,12 +168,23 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold text-sm hover:opacity-90 transition-opacity duration-200 flex items-center justify-center gap-2 tracking-wide"
+                  disabled={isSubmitting}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold text-sm hover:opacity-90 transition-opacity duration-200 flex items-center justify-center gap-2 tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send size={16} />
-                  Send Message
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      Send Message
+                    </>
+                  )}
                 </button>
-              </form>
+                </form>
+              </>
             )}
           </div>
         </div>
