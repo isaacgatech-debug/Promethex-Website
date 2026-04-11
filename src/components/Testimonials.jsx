@@ -124,7 +124,7 @@ export default function Testimonials() {
         }
         
         wheelDelta.current = 0
-      }, 150)
+      }, 50)
     }
   }
 
