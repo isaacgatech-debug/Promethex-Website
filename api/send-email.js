@@ -1,9 +1,15 @@
 const { Resend } = require('resend');
 
-// Initialize Resend with API key from environment
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Check if API key is set
+const apiKey = process.env.RESEND_API_KEY;
+console.log('API Key exists:', !!apiKey);
+console.log('API Key length:', apiKey ? apiKey.length : 0);
+
+const resend = new Resend(apiKey);
 
 module.exports = async function handler(req, res) {
+  console.log('API route called:', req.method);
+  console.log('Request body:', req.body);
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
