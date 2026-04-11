@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const testimonials = [
@@ -37,6 +37,9 @@ const testimonials = [
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const touchStartX = useRef(0)
+  const touchEndX = useRef(0)
+  const isDragging = useRef(false)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length)
@@ -44,6 +47,34 @@ export default function Testimonials() {
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+  }
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches ? e.touches[0].clientX : e.clientX
+    isDragging.current = true
+  }
+
+  const handleTouchMove = (e) => {
+    if (!isDragging.current) return
+    touchEndX.current = e.touches ? e.touches[0].clientX : e.clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!isDragging.current) return
+    isDragging.current = false
+    
+    const swipeDistance = touchStartX.current - touchEndX.current
+    const minSwipeDistance = 50
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        nextSlide()
+      } else {
+        prevSlide()
+      }
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 30000)
+    }
   }
 
   const goToSlide = (index) => {
@@ -72,7 +103,16 @@ export default function Testimonials() {
         {/* Slider Container */}
         <div className="relative">
           {/* Testimonial Cards */}
-          <div className="relative overflow-hidden rounded-2xl">
+          <div 
+            className="relative overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleTouchStart}
+            onMouseMove={handleTouchMove}
+            onMouseUp={handleTouchEnd}
+            onMouseLeave={handleTouchEnd}
+          >
             <div 
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
