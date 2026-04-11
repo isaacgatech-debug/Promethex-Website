@@ -104,27 +104,33 @@ export default function Testimonials() {
     if (isHorizontal) {
       wheelDelta.current += e.deltaX
       
-      // Clear existing timeout
-      if (wheelTimeout.current) {
-        clearTimeout(wheelTimeout.current)
-      }
+      const threshold = 30
       
-      // Set new timeout to detect end of swipe
-      wheelTimeout.current = setTimeout(() => {
-        const threshold = 30
-        
-        if (Math.abs(wheelDelta.current) > threshold) {
-          if (wheelDelta.current > 0) {
-            nextSlide()
-          } else {
-            prevSlide()
-          }
-          setIsAutoPlaying(false)
-          setTimeout(() => setIsAutoPlaying(true), 30000)
+      // Trigger immediately when threshold is reached
+      if (Math.abs(wheelDelta.current) > threshold) {
+        if (wheelDelta.current > 0) {
+          nextSlide()
+        } else {
+          prevSlide()
         }
+        setIsAutoPlaying(false)
+        setTimeout(() => setIsAutoPlaying(true), 30000)
         
         wheelDelta.current = 0
-      }, 50)
+        
+        // Clear any pending timeout
+        if (wheelTimeout.current) {
+          clearTimeout(wheelTimeout.current)
+        }
+      } else {
+        // Reset delta after a short delay if threshold not reached
+        if (wheelTimeout.current) {
+          clearTimeout(wheelTimeout.current)
+        }
+        wheelTimeout.current = setTimeout(() => {
+          wheelDelta.current = 0
+        }, 200)
+      }
     }
   }
 
