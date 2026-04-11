@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const testimonials = [
@@ -36,7 +36,6 @@ const testimonials = [
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
   const isDragging = useRef(false)
@@ -74,8 +73,6 @@ export default function Testimonials() {
       } else {
         prevSlide()
       }
-      setIsAutoPlaying(false)
-      setTimeout(() => setIsAutoPlaying(true), 30000)
     }
   }
 
@@ -101,39 +98,26 @@ export default function Testimonials() {
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
     
     const now = Date.now()
-    const cooldownPeriod = 500 // 500ms between swipes
+    const cooldownPeriod = 800 // 800ms between swipes
     
     // Check if enough time has passed since last swipe
     if (now - lastSwipeTime.current < cooldownPeriod) return
     
-    // Detect swipe direction
-    if (e.deltaX > 5) {
+    // Require more deliberate swipe (higher threshold)
+    if (e.deltaX > 20) {
       // Swipe left (next)
       nextSlide()
       lastSwipeTime.current = now
-      setIsAutoPlaying(false)
-      setTimeout(() => setIsAutoPlaying(true), 30000)
-    } else if (e.deltaX < -5) {
+    } else if (e.deltaX < -20) {
       // Swipe right (previous)
       prevSlide()
       lastSwipeTime.current = now
-      setIsAutoPlaying(false)
-      setTimeout(() => setIsAutoPlaying(true), 30000)
     }
   }
 
   const goToSlide = (index) => {
     setCurrentIndex(index)
-    setIsAutoPlaying(false)
-    // Resume auto-play after 30 seconds
-    setTimeout(() => setIsAutoPlaying(true), 30000)
   }
-
-  useEffect(() => {
-    if (!isAutoPlaying) return
-    const interval = setInterval(nextSlide, 30000)
-    return () => clearInterval(interval)
-  }, [isAutoPlaying, nextSlide])
 
   return (
     <section className="py-28 px-6 overflow-hidden">
