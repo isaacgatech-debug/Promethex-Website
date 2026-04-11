@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const testimonials = [
@@ -36,6 +36,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const touchStartX = useRef(0)
   const touchEndX = useRef(0)
   const isDragging = useRef(false)
@@ -73,6 +74,8 @@ export default function Testimonials() {
       } else {
         prevSlide()
       }
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 10000)
     }
   }
 
@@ -108,16 +111,28 @@ export default function Testimonials() {
       // Swipe left (next)
       nextSlide()
       lastSwipeTime.current = now
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 10000)
     } else if (e.deltaX < -20) {
       // Swipe right (previous)
       prevSlide()
       lastSwipeTime.current = now
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 10000)
     }
   }
 
   const goToSlide = (index) => {
     setCurrentIndex(index)
+    setIsAutoPlaying(false)
+    setTimeout(() => setIsAutoPlaying(true), 10000)
   }
+
+  useEffect(() => {
+    if (!isAutoPlaying) return
+    const interval = setInterval(nextSlide, 10000)
+    return () => clearInterval(interval)
+  }, [isAutoPlaying, nextSlide])
 
   return (
     <section className="py-28 px-6 overflow-hidden">
