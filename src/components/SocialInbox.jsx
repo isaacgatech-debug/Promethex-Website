@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { Check, Clock3, Facebook, Instagram, MessageCircle, Send, X } from 'lucide-react'
 
 const initialItems = [
-  { id: 1, channel: 'Instagram', type: 'Message', name: 'Jordan Ellis', text: 'Hey, are you available to mix our new EP next month?', time: '12 min ago', status: 'Needs reply' },
-  { id: 2, channel: 'Facebook', type: 'Scheduled post', name: 'Promethex Productions', text: 'New studio sessions are now open for October bookings.', time: 'Today · 2:00 PM', status: 'Awaiting approval' },
-  { id: 3, channel: 'Facebook', type: 'Group draft', name: 'Local Music Creators', text: 'Sharing a behind-the-scenes look at our vocal booth.', time: 'Yesterday', status: 'Draft' },
+  { id: 0, channel: 'System', type: 'Connection status', name: 'No live messages yet', text: 'Connect the Facebook Group and Instagram repositories to receive real conversations and approval items here.', time: 'Waiting', status: 'Not connected' },
 ]
 
 export default function SocialInbox() {
