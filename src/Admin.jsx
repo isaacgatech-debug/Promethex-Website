@@ -14,17 +14,19 @@ const navItems = [
   { label: 'Site content', icon: FileText },
 ]
 
-const messages = [
-  { name: 'Jordan Ellis', subject: 'Mixing inquiry for new EP', time: '12 min ago', initials: 'JE', color: 'bg-violet-500' },
-  { name: 'Maya Thompson', subject: 'Studio booking — October 12', time: '1 hr ago', initials: 'MT', color: 'bg-cyan-500' },
-  { name: 'Andre Wilson', subject: 'Vocal production availability', time: '3 hrs ago', initials: 'AW', color: 'bg-amber-500' },
-]
+const messages = []
 
 function StatCard({ label, value, detail, icon: Icon, accent }) {
+  const liveLabels = {
+    'Site visits': 'Instagram conversations',
+    'New inquiries': 'Facebook group activity',
+    'Media assets': 'Scheduled posts',
+    'Published tracks': 'Publishing status',
+  }
   return <div className="rounded-2xl border border-white/10 bg-white/[.04] p-5">
-    <div className="flex items-start justify-between"><span className="text-sm text-white/50">{label}</span><span className={`rounded-lg p-2 ${accent}`}><Icon size={17} /></span></div>
-    <div className="mt-5 text-3xl font-semibold tracking-tight">{value}</div>
-    <div className="mt-2 text-xs text-emerald-400">{detail}</div>
+    <div className="flex items-start justify-between"><span className="text-sm text-white/50">{liveLabels[label] || label}</span><span className={`rounded-lg p-2 ${accent}`}><Icon size={17} /></span></div>
+    <div className="mt-5 text-3xl font-semibold tracking-tight">—</div>
+    <div className="mt-2 text-xs text-white/40">Not connected to live data</div>
   </div>
 }
 
