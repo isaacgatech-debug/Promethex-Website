@@ -8,7 +8,8 @@ export default function handler(req, res) {
     client_id: APP_ID,
     redirect_uri: REDIRECT_URI,
     response_type: 'code',
-    scope: 'instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments',
+    force_reauth: 'true',
+    scope: 'instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_content_publish,instagram_business_manage_insights',
   });
 
   return res.redirect(`https://www.instagram.com/oauth/authorize?${params.toString()}`);
