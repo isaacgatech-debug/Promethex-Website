@@ -28,6 +28,12 @@ export default async function handler(req, res) {
   const tokenData = await tokenResponse.json();
 
   if (!tokenResponse.ok || !tokenData.access_token) {
+    console.error('Instagram token exchange failed', {
+      status: tokenResponse.status,
+      error_type: tokenData.error_type,
+      error_message: tokenData.error_message,
+      code: tokenData.code,
+    });
     return res.status(502).send('<h1>Instagram connection failed</h1><p>Meta did not return an access token. Check the app redirect URI and permissions, then try again.</p>');
   }
 
