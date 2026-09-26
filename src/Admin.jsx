@@ -37,7 +37,7 @@ export default function Admin() {
 
   const startInstagramConnection = () => {
     setConnectionStarted(true)
-    window.open('https://business.facebook.com/latest/settings/instagram_account?business_id=1925622444188876', '_blank', 'noopener,noreferrer')
+    window.open('/api/instagram/login', '_blank', 'noopener,noreferrer')
   }
 
   return <div className="min-h-screen bg-[#0b0d11] pb-20 text-white lg:flex lg:pb-0">
